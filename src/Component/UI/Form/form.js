@@ -66,9 +66,6 @@ function Form() {
             if(image.files[0].size > 1024*1024){
                 errors.file= "Image size must be less than 1mb";
             }
-            else{
-                errors.file = "Image Accepted"
-            }
         }
         
         //Name Validation
@@ -112,7 +109,6 @@ function Form() {
         }else if (values.confirmPassword !== values.password) {
             errors.confirmPassword = 'Password did not match';
         }
-
         return errors;
       };
 
@@ -156,7 +152,7 @@ function Form() {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.file}
                                 />
-                                { formik.errors.file ? <div className={`d-block ${formik.errors.file === "Image Accepted"? "text-success ": "text-danger"}`}>{formik.errors.file}</div> :""}
+                                { formik.errors.file ? <div className={`d-block text-danger`}>{formik.errors.file}</div> : <div className='text-success'>{formik.values.file}</div>}
                             </div>
 
                             <div className='col pb-1'>
