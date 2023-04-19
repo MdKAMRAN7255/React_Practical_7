@@ -1,10 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = [
-  // {
-  //   id: 220
-  // }
-]
+const initialState = []
 
 export const counterSlice = createSlice({
     name: 'counter',
@@ -12,15 +8,11 @@ export const counterSlice = createSlice({
     reducers: {
       // adding signUp page here
       addData: (state, action) => {
-        // console.log(action.payload, "action.payload")
-        // const newData = action.payload
-        // console.log(newData, "newdata")
-        // state.push(newData)
-        // console.log(JSON.parse(JSON.stringify(state)), "after state")
         state = [
           ...state, action.payload
         ]
-        console.log(JSON.parse(JSON.stringify(state)), "after state")
+        //add Data to sessionStorage so that if page is refresh data will still availabel
+        sessionStorage.setItem("loginData", JSON.stringify(state));
         return state;
       }
     }

@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './form.css'
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { addData } from '../../Slice/signUpSlice';
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 function Form() {
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+            if(sessionStorage.getItem("loginData")){
+                navigate('/home')
+            }
+    },[])
+
+    
     const dispatch = useDispatch();
     let image = document.getElementById('file');
     const  [imageValidationError, setimageValidationError]=useState("");
@@ -44,11 +53,24 @@ function Form() {
     const validate = values => {
         const errors = {};
 
+
         //Image Validation 
         if(!values.file){
             errors.file = "Required";
         }
-
+        else if(!/[^\s]+(.*?).(jpg|jpeg|png|svg)$/i.test(image.value)){
+            errors.file = "Image must be in the format of jpeg/jpg/png/svg";
+            
+        }
+        else {
+            if(image.files[0].size > 1024*1024){
+                errors.file= "Image size must be less than 1mb";
+            }
+            else{
+                errors.file = "Image Accepted"
+            }
+        }
+        
         //Name Validation
         if (!values.name) {
           errors.name = 'Required';
@@ -93,19 +115,25 @@ function Form() {
 
         return errors;
       };
+
+      const onSubmit = (values, { resetForm }, ) => {
+        const fr = new FileReader();
+        fr.onload = () => {
+        let url = fr.result;
+        values.file = url;
+        dispatch(addData(values));
+        resetForm();
+        };
+        fr.readAsDataURL(image.files[0]);
+
+            navigate('/home ')   
+    }
+
+
     const formik = useFormik({
         initialValues,
         validate,
-        onSubmit: (values, { resetForm }, ) => {
-            const fr = new FileReader();
-            fr.onload = () => {
-            let url = fr.result;
-            values.file = url;
-            dispatch(addData(values));
-            resetForm();
-            };
-            fr.readAsDataURL(image.files[0]);
-        },
+        onSubmit,
     });
 
     return (
@@ -128,7 +156,7 @@ function Form() {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.file}
                                 />
-                                { formik.errors.file ? <div className='d-block'>{formik.errors.file}</div> :""}
+                                { formik.errors.file ? <div className={`d-block ${formik.errors.file === "Image Accepted"? "text-success ": "text-danger"}`}>{formik.errors.file}</div> :""}
                             </div>
 
                             <div className='col pb-1'>
@@ -141,7 +169,7 @@ function Form() {
                                  onBlur={formik.handleBlur}
                                  value={formik.values.name}
                                 />
-                                {formik.touched.name && formik.errors.name ? <div>{formik.errors.name}</div> : null}
+                                {formik.touched.name && formik.errors.name ? <div className='text-danger'>{formik.errors.name}</div> : null}
                             </div>
 
                             <div className='col py-2'>
@@ -154,7 +182,7 @@ function Form() {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.email}
                                 />
-                                {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
+                                {formik.touched.email && formik.errors.email ? <div  className='text-danger' >{formik.errors.email}</div> : null}
                             </div>
 
                             <div className='col py-2'>
@@ -166,7 +194,7 @@ function Form() {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.phone}
                                 />
-                                {formik.touched.phone && formik.errors.phone ? <div>{formik.errors.phone}</div> : null}
+                                {formik.touched.phone && formik.errors.phone ? <div className='text-danger' >{formik.errors.phone}</div> : null}
                             </div>
 
                             <div className='col py-2'>
@@ -178,7 +206,7 @@ function Form() {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.password}
                                 />
-                                {formik.touched.password && formik.errors.password ? <div className='password'>{formik.errors.password}</div> : null}
+                                {formik.touched.password && formik.errors.password ? <div className='password text-danger'>{formik.errors.password}</div> : null}
                             </div>
 
                             <div className='col py-2'>
@@ -190,7 +218,7 @@ function Form() {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.confirmPassword}
                                 />
-                                {formik.touched.confirmPassword && formik.errors.confirmPassword ? <div>{formik.errors.confirmPassword}</div> : null}
+                                {formik.touched.confirmPassword && formik.errors.confirmPassword ? <div className='text-danger'>{formik.errors.confirmPassword}</div> : null}
                             </div>
 
                             <div className='col-12 mt-3'>
@@ -210,4 +238,3 @@ function Form() {
 }
 
 export default Form;
-
