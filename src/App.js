@@ -5,8 +5,8 @@ import Home from './Component/UI/home/home';
 function App() {
   return (
     <div className="App">
-    {/* <SignupPage /> */}
-    <Home />
+    <SignupPage />
+    {/* <Home /> */}
     </div>
   );
 }

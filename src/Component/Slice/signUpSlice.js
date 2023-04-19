@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = []
+const initialState = [
+  // {
+  //   id: 220
+  // }
+]
 
 export const counterSlice = createSlice({
     name: 'counter',
@@ -9,9 +13,13 @@ export const counterSlice = createSlice({
       // adding signUp page here
       addData: (state, action) => {
         // console.log(action.payload, "action.payload")
-        const newData = action.payload
-        console.log(newData, "newdata")
-        state.push(newData)
+        // const newData = action.payload
+        // console.log(newData, "newdata")
+        // state.push(newData)
+        // console.log(JSON.parse(JSON.stringify(state)), "after state")
+        state = [
+          ...state, action.payload
+        ]
         console.log(JSON.parse(JSON.stringify(state)), "after state")
         return state;
       }
