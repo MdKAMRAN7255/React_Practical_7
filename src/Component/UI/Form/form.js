@@ -1,23 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './form.css'
 import { useFormik } from 'formik';
 import { useDispatch} from "react-redux";
 import { addData } from '../../Slice/signUpSlice';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 function Form() {
     const navigate = useNavigate();
-
-    useEffect(()=>{
-            if(sessionStorage.getItem("loginData")){
-                navigate('/home')
-            }
-    },[])
-
     
     const dispatch = useDispatch();
     let image = document.getElementById('file');
-    const  [imageValidationError, setimageValidationError]=useState("");
+    
     const initialValues = {
         file:"",
         name: "",
@@ -27,33 +19,9 @@ function Form() {
         confirmPassword: "",
     };
 
-    // const imageValidation = () => {
-    //     console.log("helllo at enter")
-    //         if (image && image.value) {
-    //             if(!/[^\s]+(.*?).(jpg|jpeg|png|svg)$/i.test(image.value)){
-    //                 setimageValidationError("Image must be in the format of jpeg/jpg/png/svg");
-    //                 console.log(imageValidationError)
-    //             }
-    //             else {
-    //                 if(image.files[0].size > 1024*1024){
-    //                     setimageValidationError("Image size must be less than 1mb");
-    //                     console.log(imageValidationError)
-    //                 }
-    //                 else{
-    //                     setimageValidationError("");
-    //                     console.log("added");
-    //                 }
-    //             }
-    //         } else {
-    //             // console.log("else")
-    //             setimageValidationError('Required');
-    //             console.log(imageValidationError)
-    //         }
-    //     } 
+    
     const validate = values => {
         const errors = {};
-
-
         //Image Validation 
         if(!values.file){
             errors.file = "Required";
@@ -121,15 +89,16 @@ function Form() {
         resetForm();
         };
         fr.readAsDataURL(image.files[0]);
-
-            navigate('/home ')   
+        setTimeout(()=>{
+            navigate('/home')
+        },10)
+        
     }
-
 
     const formik = useFormik({
         initialValues,
         validate,
-        onSubmit,
+        onSubmit,        
     });
 
     return (

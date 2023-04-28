@@ -12,7 +12,7 @@ input[type=text]:focus{
     height: 100vh;
 }
 #file{
-    visibility: hidden;
+    /* visibility: hidden; */
     display: none;
 }
 .password{

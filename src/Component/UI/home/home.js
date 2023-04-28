@@ -13,8 +13,6 @@ function Home() {
       if (logData) {
         const data = JSON.parse(logData);
         setDetails([...data]);
-      }else{
-        navigate('/')
       }
     }, 10)
   }, []);
