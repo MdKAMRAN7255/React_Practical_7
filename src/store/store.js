@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterSlice from "./Slice/signUpSlice";
+import counterSlice from "../Slice/signUpSlice";
 
 const reducer = {
   addingData: counterSlice,

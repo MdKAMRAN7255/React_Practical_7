@@ -1,9 +1,9 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
-import SignupPage from './Component/UI/SignUpPageContainer/SignupPage';
-import Home from './Component/UI/home/home';
-import Protected from './Component/ProtectedRoutes/protected';
+import SignupPage from './Component/wrapper/SignupPage';
+import Home from './Component/home/home';
+import ProtectedHome from './Component/ProtectedRoutes/protectedHome';
 import ProtectedSignup from './Component/ProtectedRoutes/protectedSignup';
 function App() {
   return (
@@ -17,9 +17,9 @@ function App() {
           } />
 
           <Route path="/home" element={
-            <Protected >
+            <ProtectedHome >
               <Home />
-            </Protected>
+            </ProtectedHome>
           } />
           <Route path="/*" element={<Navigate to="/"/>} />
         </Routes>
